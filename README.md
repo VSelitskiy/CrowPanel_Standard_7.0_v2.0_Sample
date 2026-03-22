@@ -54,8 +54,6 @@ The following flags in `platformio.ini` are required to build LVGL correctly und
 ```ini
 build_flags =
     -D LV_LVGL_H_INCLUDE_SIMPLE
-    -D LV_CONF_INCLUDE_SIMPLE
-    -D LV_KCONFIG_IGNORE
     -I./include
 ```
 
