@@ -84,8 +84,12 @@ Or use **Upload and Monitor** in the PlatformIO sidebar.
 │   ├── main.cpp                           # Entry point
 │   ├── lgfx/                              # LovyanGFX display driver setup
 │   └── ui/                               # EEZ Studio generated UI code
+├── Starter.eez-project                    # EEZ Studio project — open this to edit the UI
+├── Starter.eez-project-ui-state          # EEZ Studio UI state (open panels, zoom, etc.)
 └── platformio.ini
 ```
+
+To edit the UI, open `Starter.eez-project` in [EEZ Studio](https://www.envox.eu/eez-studio/). The generated code is exported to `src/ui/` and compiled as part of the PlatformIO build. `Starter.eez-project-ui-state` stores the editor's workspace state (open tabs, zoom level, panel layout) and does not affect the build.
 
 ---
 
