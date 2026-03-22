@@ -8,7 +8,7 @@ This is a stripped-down version of the `Starter_EEZ-Open` example from [MikeWarr
 
 ## Hardware
 
-- **Board:** Elecrow CrowPanel 7.0" HMI (ESP32-S3, 8MB Flash, OPI PSRAM)
+- **Board:** Elecrow CrowPanel 7.0" HMI (ESP32-S3, 4MB Flash, OPI PSRAM)
 - **Display:** 800×480 RGB, capacitive touch (GT911)
 - **UI Framework:** [LVGL 8.4.x](https://lvgl.io/) + [EEZ Studio](https://www.envox.eu/eez-studio/)
 
@@ -79,13 +79,33 @@ Or use **Upload and Monitor** in the PlatformIO sidebar.
 │   └── esp32-s3-devkitc-1-myboard.json   # Fixed board definition
 ├── include/
 │   ├── lv_conf.h                          # LVGL configuration
-│   └── pins_arduino.h                     # Pin definitions
+│   └── touch.h                            # Universal touch controller driver
 ├── src/
 │   ├── main.cpp                           # Entry point
 │   ├── lgfx/                              # LovyanGFX display driver setup
 │   └── ui/                               # EEZ Studio generated UI code
 └── platformio.ini
 ```
+
+---
+
+## Customized files
+
+Two sets of files in this project are specifically tailored for the CrowPanel 7" hardware and are not generic — they should be reviewed before reusing in other projects.
+
+### `include/` — LVGL and touch configuration
+
+- **`lv_conf.h`** — LVGL configuration with memory allocation via ESP heap (`heap_caps_malloc`), Arduino `millis()` as the tick source, RGB565 color depth, and all standard widgets and Montserrat fonts enabled.
+- **`touch.h`** — Universal touch driver header supporting GT911 (active), FT6X36, and XPT2046 controllers, selectable via compile-time defines. Configured for the CrowPanel's GT911 on I2C pins SDA=19, SCL=20.
+
+See [`include/README.md`](include/README.md) for full details.
+
+### `src/lgfx/` — LovyanGFX display driver
+
+- **`lgfx.h`** — Declares the `LGFX` class (16-bit parallel RGB bus, 800×480 panel, static LVGL draw buffer) and the global `lcd` instance.
+- **`lgfx.cpp`** — Defines the complete RGB pin mapping (16 data lines + HSYNC/VSYNC/DE/PCLK), display timing parameters, LVGL flush and touch callbacks, and the `setup()` initialization sequence including backlight control via LEDC PWM on GPIO 2.
+
+See [`src/lgfx/README.md`](src/lgfx/README.md) for full details.
 
 ---
 
